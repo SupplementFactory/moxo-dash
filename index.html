@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Directory - Supplement Factory</title>
+    <meta name="description" content="Supplement Factory Project Management Dashboard - Track and manage all your formulation projects">
+    <link rel="icon" type="image/png" href="assets/supplement-factory-logo.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="loading">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <img src="assets/supplement-factory-logo.png" alt="Supplement Factory" class="logo">
+                <div class="header-text">
+                    <h1>Project Management Dashboard</h1>
+                    <p>Advanced Formulation Development Platform</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-primary" id="createProjectBtn">
+                    <span class="btn-icon">+</span>
+                    Create New Project
+                </button>
+                <div class="user-menu">
+                    <div class="sync-indicator" id="syncIndicator" title="System Status"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Stats Overview -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="totalProjects">0</div>
+                        <div class="stat-label">Total Projects</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🚀</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="activeProjects">0</div>
+                        <div class="stat-label">Active Projects</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="completedProjects">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="delayedProjects">0</div>
+                        <div class="stat-label">Delayed</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="projects-section">
+            <div class="section-header">
+                <h2>Your Projects</h2>
+                <div class="section-controls">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Search projects..." class="search-input">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select id="statusFilter" class="filter-select">
+                            <option value="">All Status</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Delayed">Delayed</option>
+                            <option value="On Hold">On Hold</option>
+                            <option value="Cancelled">Cancelled</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="cards" title="Card View">⊞</button>
+                        <button class="view-btn" data-view="list" title="List View">☰</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="projects-container">
+                <div class="projects-grid" id="projectsGrid">
+                    <!-- Projects will be dynamically loaded here -->
+                </div>
+                
+                <!-- Empty State -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">📋</div>
+                    <h3>No Projects Yet</h3>
+                    <p>Create your first supplement formulation project to get started</p>
+                    <button class="btn btn-primary" onclick="document.getElementById('createProjectBtn').click()">
+                        Create Your First Project
+                    </button>
+                </div>
+
+                <!-- Loading State -->
+                <div class="loading-state" id="loadingState">
+                    <div class="loading-spinner"></div>
+                    <p>Loading projects...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Create Project Modal -->
+    <div class="modal-overlay" id="createProjectModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Create New Project</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="createProjectForm" class="create-form">
+                    <div class="form-group">
+                        <label for="projectName">Project Name *</label>
+                        <input type="text" id="projectName" name="projectName" required 
+                               placeholder="e.g., Heal - Greens Blend" class="form-input">
+                        <small class="form-help">This will be used to generate the project URL</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="startDate">Start Date *</label>
+                        <input type="date" id="startDate" name="startDate" required class="form-input">
+                        <small class="form-help">When did this project begin?</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="projectDescription">Description (Optional)</label>
+                        <textarea id="projectDescription" name="projectDescription" 
+                                  placeholder="Brief description of the supplement formulation..."
+                                  class="form-textarea" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Generated URL Slug</label>
+                        <div class="url-preview">
+                            <span class="url-base">connect.supplementfactoryuk.com/projects/</span>
+                            <span class="url-slug" id="urlSlugPreview">project-name</span>
+                        </div>
+                        <small class="form-help">URL will be automatically generated from project name</small>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelCreate">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <span class="btn-text">Create Project</span>
+                            <span class="btn-loading" style="display: none;">Creating...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <p>&copy; 2024 Supplement Factory. Advanced Project Management Platform.</p>
+            </div>
+            <div class="footer-right">
+                <span>Last Updated: <span id="lastUpdated">--</span></span>
+                <span>Data Source: <span id="dataSource">Cloud Ready</span></span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/data-manager.js"></script>
+    <script src="js/project-manager.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
+

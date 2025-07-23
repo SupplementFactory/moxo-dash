@@ -1,0 +1,67 @@
+{
+  "name": "supplement-factory-multi-project-tracker",
+  "version": "2.0.0",
+  "description": "Advanced multi-project management platform for supplement formulation development",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "serve": "python3 -m http.server 8000",
+    "dev": "python3 -m http.server 8000",
+    "build": "echo 'No build process required for static HTML/CSS/JS'",
+    "test": "echo 'No tests configured'",
+    "lint": "echo 'No linting configured'",
+    "format": "echo 'No formatting configured'"
+  },
+  "keywords": [
+    "supplement",
+    "formulation",
+    "project-management",
+    "dashboard",
+    "tracker",
+    "multi-project",
+    "pharmaceutical",
+    "nutraceutical"
+  ],
+  "author": "Supplement Factory",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/supplement-factory/multi-project-tracker"
+  },
+  "homepage": "https://connect.supplementfactoryuk.com",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  },
+  "dependencies": {},
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "config": {
+    "domain": "connect.supplementfactoryuk.com",
+    "port": 8000,
+    "ssl": false
+  },
+  "directories": {
+    "assets": "./assets",
+    "css": "./css",
+    "js": "./js",
+    "projects": "./projects"
+  },
+  "files": [
+    "index.html",
+    "projects/",
+    "css/",
+    "js/",
+    "assets/",
+    "README.md",
+    "DEPLOYMENT.md"
+  ]
+}
+
